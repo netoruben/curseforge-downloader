@@ -15,6 +15,12 @@ class CurseForge {
         .then((response) => response.json())
         .then((categories) => {return categories})
     }
+
+    async getMods(gameID: number, classID: number, searchFilter: string) {
+        return await fetch(`${this.API_URL}/curseforge/games/${gameID}/main-categories/${classID}/mods/search/${searchFilter}`, { method: 'GET', headers: this.API_HEADERS})
+        .then((response) => response.json())
+        .then((mods) => {return mods})
+    }
 }
 
 export default CurseForge

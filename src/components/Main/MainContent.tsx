@@ -8,6 +8,8 @@ import Wrapper from '../common/Wrapper/Wrapper'
 const MainContent: Component = () => {
     const [games, setGames] = createSignal<{ name?: string, id?: number, assets?: { iconUrl?: string } }>({ assets: {} })
     const [categories, setCategories] = createSignal<{ name?: string, id?: number, iconUrl?: string }>({})
+    const [mods, setMods] = createSignal()
+    const [searchValue, setSearchValue] = createSignal<string>()
 
     const getGames = async () => {
         const games: [{name: string}] = await new CurseForge().getGames()
@@ -23,13 +25,21 @@ const MainContent: Component = () => {
         })
     }
 
+    const getMods = async (gameID: number, classID: number, searchFilter: string) => {
+        const mods = await new CurseForge().getMods(gameID, classID, searchFilter)
+        await setMods(mods)
+    }
+
     onMount(async () => {
         await getGames()
         await getCategories()
     })
 
-    createEffect(() => {
-        console.log(categories())
+    createEffect(async () => {
+        if(searchValue()) {
+            await getMods(games().id, categories().id, searchValue())
+            console.log(mods())
+        }
     })
 
     return (
@@ -43,7 +53,7 @@ const MainContent: Component = () => {
                     <Icon style='dropdown' link={categories().hasOwnProperty('iconUrl') ? categories().iconUrl : ''}/>
                     {categories().hasOwnProperty('name') ? categories().name : ''}
                 </Button>
-                <Input style='search' placeholder='Search by name or author...'>
+                <Input style='search' placeholder='Search by name or author...' setValue={setSearchValue} >
                 </Input>
             </Wrapper>
         </Wrapper>

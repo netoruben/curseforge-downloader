@@ -3,11 +3,11 @@ import { styled, useTheme } from 'solid-styled-components'
 
 type Props = {
     style: 'search',
-    placeholder: string
+    placeholder: string,
+    setValue: (value: string) => void
 }
 
 const Input: ParentComponent<Props> = (props) => {
-    const { style, placeholder } = props
     const theme = useTheme()
 
     const Primary = styled.input`
@@ -30,14 +30,14 @@ const Input: ParentComponent<Props> = (props) => {
         }
     `
 
-    const renderElement = (children: JSXElement, placeholder: string): JSXElement => {
-        switch (style) {
+    const renderElement = (): JSXElement => {
+        switch (props.style) {
             case 'search':
-                return <Primary placeholder={placeholder} >{children}</Primary>
+                return <Primary placeholder={props.placeholder} onchange={(event: Event) => {props.setValue((event.target as HTMLInputElement).value)}}>{props.children}</Primary>
         }
     }
 
-    return (renderElement(props.children, placeholder))
+    return (renderElement())
 }
 
 export default Input
