@@ -29,6 +29,7 @@ const Button: ParentComponent<Props> = (props) => {
     border-radius: ${theme.border.radius};
     cursor: pointer;
     margin-right: 0.2em;
+    display: flex;
     &:hover {
       background: ${theme.colors.darkest};
     }

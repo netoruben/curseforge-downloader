@@ -19,6 +19,15 @@ const Input: ParentComponent<Props> = (props) => {
         color: ${theme.colors.white};
         border-radius: ${theme.border.radius};
         flex-grow: 1;
+        box-sizing: border-box;
+        height: 100%;
+        max-height: 38px;
+        &:focus-visible {
+            border-width: 0.15em;
+            border-style: solid;
+            border-color: ${theme.colors.dark};
+            outline: unset;
+        }
     `
 
     const renderElement = (children: JSXElement, placeholder: string): JSXElement => {
