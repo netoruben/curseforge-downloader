@@ -38,7 +38,7 @@ const MainContent: Component = () => {
                 <Button style='dropdown' action={() => {}}>
                     {categories().hasOwnProperty('name') ? categories().name : ''}
                 </Button>
-                <Input style='search'>
+                <Input style='search' placeholder='Search by name or author...'>
                 </Input>
             </Wrapper>
         </Wrapper>

@@ -2,11 +2,12 @@ import { JSXElement, ParentComponent } from 'solid-js'
 import { styled, useTheme } from 'solid-styled-components'
 
 type Props = {
-    style: 'search'
+    style: 'search',
+    placeholder: string
 }
 
 const Input: ParentComponent<Props> = (props) => {
-    const { style } = props
+    const { style, placeholder } = props
     const theme = useTheme()
 
     const Primary = styled.input`
@@ -20,14 +21,14 @@ const Input: ParentComponent<Props> = (props) => {
         flex-grow: 1;
     `
 
-    const renderElement = (children: JSXElement): JSXElement => {
+    const renderElement = (children: JSXElement, placeholder: string): JSXElement => {
         switch (style) {
             case 'search':
-                return <Primary>{children}</Primary>
+                return <Primary placeholder={placeholder} >{children}</Primary>
         }
     }
 
-    return (renderElement(props.children))
+    return (renderElement(props.children, placeholder))
 }
 
 export default Input
