@@ -16,8 +16,7 @@ const Input: ParentComponent<Props> = (props) => {
         font-size: 1em;
         letter-spacing: 0.1em;
         color: ${theme.colors.white};
-        border-top-right-radius: ${theme.border.radius};
-        border-bottom-right-radius: ${theme.border.radius};
+        border-radius: ${theme.border.radius};
         flex-grow: 1;
     `
 

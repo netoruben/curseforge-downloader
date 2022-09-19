@@ -52,6 +52,10 @@ const Styles = createGlobalStyles`
     button {
         font-family: inherit;
     }
+
+    input {
+        font-family: inherit;
+    }
 `
 export { theme }
 export default Styles

@@ -35,7 +35,7 @@ const MainContent: Component = () => {
                 <Button style='dropdown' action={() => {}}>
                     {games().hasOwnProperty('name') ? games().name : ''}
                 </Button>
-                <Button style='dropdown-no-radius' action={() => {}}>
+                <Button style='dropdown' action={() => {}}>
                     {categories().hasOwnProperty('name') ? categories().name : ''}
                 </Button>
                 <Input style='search'>
