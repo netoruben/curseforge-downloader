@@ -21,6 +21,12 @@ class CurseForge {
         .then((response) => response.json())
         .then((mods) => {return mods})
     }
+
+    async getFile(modID: number, fileID: number) {
+        return await fetch(`${this.API_URL}/curseforge/mods/${modID}/files/${fileID}`, { method: 'GET', headers: this.API_HEADERS})
+        .then((response) => response.json())
+        .then((file) => {return file})
+    }
 }
 
 export default CurseForge

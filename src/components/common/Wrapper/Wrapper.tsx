@@ -50,11 +50,12 @@ const Wrapper: ParentComponent<Props> = (props) => {
         display: none;
         position: absolute;
         background: ${theme.colors.dark};
-        padding: 0.4em;
+        padding: 0.4em 0.4em 0 0.4em;
         z-index: 1;
         border-radius: ${theme.border.radius};
-        left: 0;
+        right: 0;
         bottom: 0;
+        cursor: default;
     `
 
     const Element = () => {

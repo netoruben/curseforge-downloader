@@ -14,10 +14,8 @@ const MainContentAction = {
 }
 
 const MainContent: Component = () => {
-    const { status: cardActions, toggleStatus: setCardActions } = toogleBoolean()
     const [games, setGames] = createSignal<{ name?: string, id?: number, assets?: { iconUrl?: string } }>({ assets: {} })
     const [categories, setCategories] = createSignal<{ name?: string, id?: number, iconUrl?: string }>({})
-    const [mods, setMods] = createSignal<[{ slug: string, name: string, logo: { url: string }, authors: [{ name: string }], latestFiles: { gameVersions: string[], displayName: string, fileName: string }[] }]>()
     const [searchValue, setSearchValue] = createSignal<string>()
 
     const getGames = async () => {
@@ -38,15 +36,6 @@ const MainContent: Component = () => {
         await getGames()
         await getCategories()
     })
-
-    // const renderModCards = (): JSXElement => {
-    //     if(mods.length > 0) {
-    //         mods().forEach(mod => {
-    //             console.log(mod)
-    //             return <Wrapper style='mod-card'></Wrapper>
-    //         })
-    //     }
-    // }
 
     return (
         <Wrapper style='main-content'>

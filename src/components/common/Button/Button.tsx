@@ -57,8 +57,9 @@ const Button: ParentComponent<Props> = (props) => {
         background: transparent;
         margin: 0;
         padding: 0 0.2em 0 0.2em;
-        float: right;
-        position: relative;
+        position: absolute;
+        bottom: 0.5em;
+        right: 0.5em;
         &:hover {
             background: ${theme.colors.light};
         }

@@ -45,4 +45,17 @@ server.get('/curseforge/games/:gameID/main-categories/:classID/mods/search/:sear
     })
 })
 
+server.get('/curseforge/mods/:modID/files/:fileID', async (req, rep) => {
+    const modID = req.params.modID
+    const fileID = req.params.fileID
+    await fetch(`${CURSEFORGE_API_URL}/mods/${modID}/files/${fileID}`, { method: 'GET', headers: CURSEFORGE_API_HEADERS})
+    .then(async (response) => {
+        const data = await response.json()
+        rep.send(data.data)
+    })
+    .catch((err) => {
+        console.log(err)
+    })
+})
+
 server.listen(3001)

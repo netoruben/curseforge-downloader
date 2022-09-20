@@ -1,4 +1,4 @@
-import { Component, createEffect, createMemo, For, onMount } from 'solid-js'
+import { Component, createEffect, createMemo, createSignal, For, onMount } from 'solid-js'
 import CurseForge from '../../../utils/CurseForge/CurseForge'
 import toogleBoolean from '../hooks/toggleBoolean'
 import Button from '../common/Button/Button'
@@ -7,12 +7,19 @@ import Title from '../common/Title/Title'
 import Text from '../common/Text/Text'
 import Wrapper from '../common/Wrapper/Wrapper'
 
+type ServerFile = {
+    displayName: string,
+    fileName: string,
+    downloadUrl: string
+}
+
 type Props = {
-    mod: { name: string, logoUrl: string, gameIcon: string, gameVersions: string[], authorName: string, latestFile: { displayName: string, fileName: string }}
+    mod: { modID: number, serverPackFileId: number, name: string, logoUrl: string, gameIcon: string, gameVersions: string[], authorName: string, latestFile: { displayName: string, fileName: string }}
 }
 
 const ModCard: Component<Props> = (props) => {
     const { status: cardActionsStatus, toggleStatus: toggleCardActionsStatus } = toogleBoolean()
+    const [serverFile, setServerFile] = createSignal<ServerFile>()
     let cardActionsElement: HTMLDivElement,
         cardMore: HTMLButtonElement
 
@@ -20,11 +27,15 @@ const ModCard: Component<Props> = (props) => {
         toggleCardActionsStatus: () => {if (!cardActionsStatus()) {toggleCardActionsStatus(); cardActionsElement.style.display = 'grid'}}
     }
 
-    // createMemo(() => {
-    //     console.log('hi')
-    // }, cardActionsStatus())
+    
+    const getServerFile = async () => {
+        const file = await new CurseForge().getFile(props.mod.modID, props.mod.serverPackFileId)
+        await setServerFile(file)
+    }
 
-    onMount(() => {
+    onMount(async () => {
+        await getServerFile()
+
         document.addEventListener('click', (event) => {
             if (cardActionsStatus()) {
                 if (event.target !== cardActionsElement && event.target !== cardMore) {
@@ -35,20 +46,9 @@ const ModCard: Component<Props> = (props) => {
         })
     })
 
-    // createEffect(() => {
-    //     const listener = (target: EventTarget) => {
-    //         if (target !== cardActionsElement && target !== cardMore) {
-    //             toggleCardActionsStatus()
-    //             cardActionsElement.style.display = 'none'
-    //         }
-    //     }
-
-    //     if (cardActionsStatus()) {
-    //         document.addEventListener('click', (event) => listener(event.target), true)
-    //     } else {
-    //         document.removeEventListener('click', (event) => listener(event.target), true)
-    //     }
-    // })
+    createEffect(() => {
+        console.log(serverFile())
+    })
 
     return (
         <Wrapper style='card'>
@@ -64,6 +64,8 @@ const ModCard: Component<Props> = (props) => {
                 <Wrapper style='card-actions' ref={cardActionsElement}>
                     <Button style='card-action' action={() => {}}>Download {props.mod.latestFile.displayName}</Button>
                     <Button style='card-action' action={() => {}}>Download {props.mod.latestFile.fileName}</Button>
+                    <Button style='card-action' action={() => {}}>Download {serverFile() ? serverFile().displayName : ''}</Button>
+                    <Button style='card-action' action={() => {}}>Download {serverFile() ? serverFile().fileName : ''}</Button>
                 </Wrapper>
             </Button>
         </Wrapper>
