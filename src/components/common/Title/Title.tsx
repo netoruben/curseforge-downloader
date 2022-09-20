@@ -1,38 +1,54 @@
-import { JSXElement, ParentComponent } from 'solid-js'
+import { ParentComponent } from 'solid-js'
 import { styled, useTheme } from 'solid-styled-components'
 
+type Style = 'nav' | 'card'
+
 type Props = {
-  style: 'nav'
+    style: Style
 }
 
 const Title: ParentComponent<Props> = (props) => {
-  const { style } = props
+    const theme = useTheme()
 
-  const theme = useTheme()
+    const Default = styled.h1`
+        margin: 0;
+        padding: 0.2em 0.2em 0.2em 0;
+        font-weight: 600;
+        font-size: 1em;
+        letter-spacing: 0.05em;
+        color: ${theme.colors.white};
+    `
 
-  const NavTitle = styled.h1`
-    margin: 0.05em 0 0 0.5em;
-    height: 100%;
-    cursor: default;
-    font-weight: 400;
-    flex-grow: 1;
-    padding: 0;
-    font-size: 1em;
-    letter-spacing: 0.1em;
-    display: flex;
-    align-items: center;
-    color: ${theme.colors.white};
-    -webkit-app-region: drag;
-  `
+    const Nav = styled(Default)`
+        margin: 0.05em 0 0 0.5em;
+        height: 100%;
+        cursor: default;
+        font-weight: 400;
+        flex-grow: 1;
+        padding: 0;
+        letter-spacing: 0.1em;
+        display: flex;
+        align-items: center;
+        -webkit-app-region: drag;
+    `
 
-  const renderElement = (children: JSXElement): JSXElement => {
-    switch(style) {
-      case 'nav':
-        return <NavTitle>{children}</NavTitle>
+    const Card = styled(Default)`
+        white-space: pre-wrap;
+        max-width: calc(400px - 150px - 0.4em);
+    `
+
+    const Element = () => {
+        switch(props.style) {
+        case 'nav':
+            return <Nav>{props.children}</Nav>
+        case 'card':
+            return <Card>{props.children}</Card>
+        default:
+            return <Default>{props.children}</Default>
+        }
     }
-  }
 
-  return (renderElement(props.children))
+    return (Element())
 }
 
 export default Title

@@ -1,14 +1,14 @@
 import { ParentComponent } from 'solid-js'
 import { styled, useTheme } from 'solid-styled-components'
 
-const NavBarCommonActions = {
+export const NavBarCommonActions = {
     minimize: () => nw.Window.get().minimize(),
     maximize: () => nw.Window.get().maximize(),
     restore: () => nw.Window.get().restore(),
     close: () => nw.Window.get().close()
 }
 
-const NavBarCommonSVG = {
+export const NavBarCommonSVG = {
     minimize: <svg xmlns="http://www.w3.org/2000/svg" version="1.0" width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet">
                 <g transform="rotate(45 256 256) translate(0.000000,512.000000) scale(0.100000,-0.100000)">
                     <path d="M2488 2632 l-1128 -1127 0 -43 c0 -35 6 -49 29 -73 24 -23 38 -29 73 -29 l43 0 1127 1128 1128 1127 0 43 c0 35 -6 49 -29 73 -24 23 -38 29 -73 29 l-43 0 -1127 -1128z"/>
@@ -44,7 +44,6 @@ const NavBarCommonSVG = {
 }
 
 const NavBar: ParentComponent = (props) => {
-
   const theme = useTheme()
 
   const Nav = styled.nav`
@@ -62,5 +61,4 @@ const NavBar: ParentComponent = (props) => {
   )
 }
 
-export { NavBarCommonActions, NavBarCommonSVG }
 export default NavBar

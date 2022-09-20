@@ -1,28 +1,38 @@
-import { JSXElement, Component } from 'solid-js'
+import { Component } from 'solid-js'
 import { styled, useTheme } from 'solid-styled-components'
 
+type Style = 'small' | 'card'
+
 type Props = {
-    style: 'dropdown',
-    link: string
+    style: Style,
+    src: string
 }
 
 const Icon: Component<Props> = (props) => {
     const theme = useTheme()
 
-    const Dropdown = styled.img`
+    const Small = styled.img`
         width: 20px;
         height: 20px;
         margin-right: 0.2em;
     `
 
-    const renderElement = (): JSXElement => {
+    const Card = styled.img`
+        border-radius: ${theme.border.radius};
+        width: 100px;
+        height: 100px;
+    `
+
+    const Element = () => {
         switch (props.style) {
-            case 'dropdown':
-                return <Dropdown src={props.link}/>
+            case 'small':
+                return <Small src={props.src}/>
+            case 'card':
+                return <Card src={props.src}/>
         }
     }
 
-    return (renderElement())
+    return (Element())
 }
 
 export default Icon

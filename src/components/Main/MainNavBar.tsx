@@ -25,13 +25,13 @@ const MainNavBar: Component = () => {
       <Title style='nav'>
         {nw.Window.get().title}
       </Title>
-      <Wrapper style='nav-btn'>
+      <Wrapper style='nav-buttons'>
         {/* Minimize Button */}
-        <Button style='nav' action={NavBarCommonActions.minimize}> {NavBarCommonSVG.minimize} </Button>
+        <Button style='nav' action={NavBarCommonActions.minimize}>{NavBarCommonSVG.minimize}</Button>
         {/* Maximize Button or Restore Button*/}
         {renderMaximizeOrUnmaximize()}
         {/* Close Button */}
-        <Button style='nav-close' action={NavBarCommonActions.close}> {NavBarCommonSVG.close} </Button>
+        <Button style='navClose' action={NavBarCommonActions.close}>{NavBarCommonSVG.close}</Button>
       </Wrapper>
     </NavBar>
   )

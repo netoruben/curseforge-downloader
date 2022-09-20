@@ -1,39 +1,68 @@
-import { JSXElement, ParentComponent } from 'solid-js'
-import { styled } from 'solid-styled-components'
+import { ParentComponent } from 'solid-js'
+import { styled, useTheme } from 'solid-styled-components'
+
+type Style = 'nav-buttons' | 'inline' | 'main-content' | 'card' | 'list-items'
 
 type Props = {
-    style: 'nav-btn' | 'padding' | 'normal'
+    style?: Style
 }
 
 const Wrapper: ParentComponent<Props> = (props) => {
-    const { style } = props
+    const theme = useTheme()
 
-    const Normal = styled.div`
+    const Default = styled.div`
         width: 100%;
-        display: inline-flex;
     `
 
-    const NavBtn = styled.div`
+    const NavButtons = styled(Default)`
+        width: unset;
         height: 100%;
     `
 
-    const Padding = styled.div`
+    const Inline = styled(Default)`
+        display: inline-flex;
+    `
+
+    const Card = styled.div`
+        background: ${theme.colors.darkest};
+        border-radius: ${theme.border.radius};
+        margin: 0 0.5em 0.5em 0;
+        padding: 0.5em;
+        width: 250px;
+        position: relative;
+    `
+
+    const MainContent = styled.div`
         height: calc(100% - 30px - 3em);
         padding: 1.5em;
     `
 
-    const renderElement = (children: JSXElement): JSXElement => {
-        switch (style) {
-            case 'nav-btn':
-                return <NavBtn>{children}</NavBtn>
-            case 'padding':
-                return <Padding>{children}</Padding>
-            case 'normal':
-                return <Normal>{children}</Normal>
+    const ListItems = styled.div`
+        padding-top: 1.5em;
+        display: flex;
+        flex-flow: wrap;
+        white-space: nowrap;
+        justify-content: center;
+    `
+
+    const Element = () => {
+        switch (props.style) {
+            case 'nav-buttons':
+                return <NavButtons>{props.children}</NavButtons>
+            case 'inline':
+                return <Inline>{props.children}</Inline>
+            case 'main-content':
+                return <MainContent>{props.children}</MainContent>
+            case 'list-items':
+                return <ListItems>{props.children}</ListItems>
+            case 'card':
+                return <Card>{props.children}</Card>
+            default:
+                return <Default>{props.children}</Default>
         }
     }
 
-    return (renderElement(props.children))
+    return (Element())
 }
 
 export default Wrapper

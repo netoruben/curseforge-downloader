@@ -1,8 +1,10 @@
-import { JSXElement, ParentComponent } from 'solid-js'
+import { ParentComponent } from 'solid-js'
 import { styled, useTheme } from 'solid-styled-components'
 
+type Style = 'filter-search'
+
 type Props = {
-    style: 'search',
+    style: Style,
     placeholder: string,
     setValue: (value: string) => void
 }
@@ -10,7 +12,7 @@ type Props = {
 const Input: ParentComponent<Props> = (props) => {
     const theme = useTheme()
 
-    const Primary = styled.input`
+    const Search = styled.input`
         background: ${theme.colors.darkest};
         border: 0;
         padding: 0.5em;
@@ -30,14 +32,14 @@ const Input: ParentComponent<Props> = (props) => {
         }
     `
 
-    const renderElement = (): JSXElement => {
+    const Element = () => {
         switch (props.style) {
-            case 'search':
-                return <Primary placeholder={props.placeholder} onchange={(event: Event) => {props.setValue((event.target as HTMLInputElement).value)}}>{props.children}</Primary>
+            case 'filter-search':
+                return <Search placeholder={props.placeholder} onchange={(event: Event) => {props.setValue((event.target as HTMLInputElement).value)}}>{props.children}</Search>
         }
     }
 
-    return (renderElement())
+    return (Element())
 }
 
 export default Input
