@@ -1,4 +1,5 @@
-import { Component, createEffect, createSignal, JSXElement, onMount, For } from 'solid-js'
+import { Component, createEffect, createSignal, onMount, For } from 'solid-js'
+import toogleBoolean from '../hooks/toggleBoolean'
 import CurseForge from '../../../utils/CurseForge/CurseForge'
 import Button from '../common/Button/Button'
 import Icon from '../common/Icon/Icon'
@@ -6,11 +7,17 @@ import Input from '../common/Input/Input'
 import Title from '../common/Title/Title'
 import Text from '../common/Text/Text'
 import Wrapper from '../common/Wrapper/Wrapper'
+import ListModCards from './ListModCards'
+
+const MainContentAction = {
+    cardActions: () => {}
+}
 
 const MainContent: Component = () => {
+    const { status: cardActions, toggleStatus: setCardActions } = toogleBoolean()
     const [games, setGames] = createSignal<{ name?: string, id?: number, assets?: { iconUrl?: string } }>({ assets: {} })
     const [categories, setCategories] = createSignal<{ name?: string, id?: number, iconUrl?: string }>({})
-    const [mods, setMods] = createSignal<[{ slug: string, name: string, logo: { url: string }, authors: [{ name: string }], latestFiles: { gameVersions: string[] }[] }]>()
+    const [mods, setMods] = createSignal<[{ slug: string, name: string, logo: { url: string }, authors: [{ name: string }], latestFiles: { gameVersions: string[], displayName: string, fileName: string }[] }]>()
     const [searchValue, setSearchValue] = createSignal<string>()
 
     const getGames = async () => {
@@ -27,21 +34,9 @@ const MainContent: Component = () => {
         })
     }
 
-    const getMods = async (gameID: number, classID: number, searchFilter: string) => {
-        const mods = await new CurseForge().getMods(gameID, classID, searchFilter)
-        await setMods(mods)
-    }
-
     onMount(async () => {
         await getGames()
         await getCategories()
-    })
-
-    createEffect(async () => {
-        if(searchValue()) {
-            await getMods(games().id, categories().id, searchValue())
-            console.log(mods())
-        }
     })
 
     // const renderModCards = (): JSXElement => {
@@ -67,23 +62,7 @@ const MainContent: Component = () => {
                 <Input style='filter-search' placeholder='Search by name or author...' setValue={setSearchValue} >
                 </Input>
             </Wrapper>
-            <Wrapper style='list-items'>
-                <For each={mods()} fallback={<div>Loading...</div>}>
-                    {(mod) =>
-                        <Wrapper style='card'>
-                            <Icon style='card' src={mod.logo.url}/>
-                            <Title style='card'>{mod.name.replaceAll(/(:| -|\((.*)|^ )/gm, '')}<Text style='bold'> by </Text>{mod.authors[0].name}</Title>
-                            <For each={mod.latestFiles[mod.latestFiles.length - 1].gameVersions} fallback={<div>Loading...</div>}>
-                                {(version) => {
-                                    if(version !== 'Forge')
-                                        return <Text style='card-blob'><Icon style='small' src={games().assets.iconUrl}/>{version}</Text>
-                                }}
-                            </For>
-                            <Button style='card' action={() => {}}>&middot;&middot;&middot;</Button>
-                        </Wrapper>
-                    }
-                </For>
-            </Wrapper>
+            <ListModCards gameID={games().id} gameIcon={games().assets.iconUrl} classID={categories().id} searchFilter={searchValue()}/>
         </Wrapper>
     )
 }
