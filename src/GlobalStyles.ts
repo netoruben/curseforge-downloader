@@ -10,6 +10,7 @@ const theme = {
       light: 'rgb(64, 64, 64)',
       white: 'rgb(255,255,255)',
       red: 'rgb(232, 119, 111)',
+      green: 'rgb(140, 215, 144)',
       curseforge: '#F16436'
     },
     border: {

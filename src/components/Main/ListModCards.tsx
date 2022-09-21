@@ -9,7 +9,7 @@ type Mods = {
     name: string,
     logo: { url: string },
     authors: { name: string }[],
-    latestFiles: { gameVersions: string[], displayName: string, fileName: string, modId: number, serverPackFileId: number }[]
+    latestFiles: { gameVersions: string[], displayName: string, downloadUrl: string, fileName: string, modId: number, serverPackFileId: number }[]
 }[]
 
 type Props = {
@@ -40,6 +40,7 @@ const ListModCards: Component<Props> = (props) => {
                     <ModCard mod={{ 
                         modID: mod.latestFiles[mod.latestFiles.length - 1].modId,
                         serverPackFileId: mod.latestFiles[mod.latestFiles.length - 1].serverPackFileId,
+                        downloadUrl: mod.latestFiles[mod.latestFiles.length - 1].downloadUrl,
                         name: mod.name,
                         logoUrl: mod.logo.url,
                         authorName: mod.authors[0].name,

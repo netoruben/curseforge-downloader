@@ -8,6 +8,7 @@ declare module "solid-styled-components" {
         light: string,
         white: string,
         red: string,
+        green: string,
         curseforge: string
     }
     border: {

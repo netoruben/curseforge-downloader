@@ -1,7 +1,7 @@
 import { ParentComponent } from 'solid-js'
 import { styled, useTheme } from 'solid-styled-components'
 
-type Style = 'bold' | 'card' | 'card-blob'
+type Style = 'bold' | 'card' | 'card-blob' | 'card-success' | 'medium'
 
 type Props = {
     style: Style
@@ -15,13 +15,21 @@ const Text: ParentComponent<Props> = (props) => {
         padding: 0 0.2em 0.2em 0;
         color: ${theme.colors.white};
         letter-spacing: 0.1em;
-        font-weight: 200;
-        display: flex;
+        font-weight: 400;
+        white-space: pre-wrap;
         align-items: center;
     `
 
-    const Bold = styled.span`
+    const CardSuccess = styled(Card)`
+        color: ${theme.colors.green};
+    `
+
+    const Medium = styled.span`
         font-weight: 400;
+    `
+
+    const Bold = styled.span`
+        font-weight: 500;
     `
 
     const CardBlob = styled(Card)`
@@ -37,6 +45,10 @@ const Text: ParentComponent<Props> = (props) => {
         switch (props.style) {
             case 'card':
                 return <Card>{props.children}</Card>
+            case 'card-success':
+                return <CardSuccess>{props.children}</CardSuccess>
+            case 'medium':
+                return <Medium>{props.children}</Medium>
             case 'bold':
                 return <Bold>{props.children}</Bold>
             case 'card-blob':
