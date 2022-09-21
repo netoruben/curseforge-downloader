@@ -39,6 +39,7 @@ const Text: ParentComponent<Props> = (props) => {
         position: absolute;
         top: 0.5em;
         right: 0.5em;
+        display: flex;
     `
 
     const Element = () => {
