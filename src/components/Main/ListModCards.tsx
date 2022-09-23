@@ -24,6 +24,7 @@ const ListModCards: Component<Props> = (props) => {
 
     createMemo(async () => {
         if (props.searchFilter !== undefined) {
+            setMods(undefined)
             const mods = await new CurseForge().getMods(props.gameID, props.classID, props.searchFilter)
             await setMods(mods)
         }

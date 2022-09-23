@@ -17,6 +17,7 @@ const Text: ParentComponent<Props> = (props) => {
         letter-spacing: 0.1em;
         font-weight: 400;
         white-space: pre-wrap;
+        word-break: break-all;
         align-items: center;
     `
 

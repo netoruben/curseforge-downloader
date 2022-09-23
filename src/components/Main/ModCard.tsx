@@ -1,4 +1,4 @@
-import { Component, createEffect, useContext, createSignal, For, onMount } from 'solid-js'
+import { Component, useContext, createSignal, For, onMount } from 'solid-js'
 import CurseForge from '../../../utils/CurseForge/CurseForge'
 import Download from '../../../utils/Download/Download'
 import toogleBoolean from '../hooks/toggleBoolean'
@@ -29,10 +29,10 @@ const ModCard: Component<Props> = (props) => {
 
     const CardActions = {
         toggleCardActionsStatus: () => {if (!cardActionsStatus()) {toggleCardActionsStatus(); cardActionsElement.style.display = 'grid'}},
-        downloadOnly: async (downloadUrl: string, fileName: string) => { await new Download().downloadOnly(downloadUrl, fileName, settings().savePath, setDownloadStatus) }
+        downloadOnly: async (downloadUrl: string, fileName: string) => { await new Download().downloadOnly(downloadUrl, fileName, settings().savePath, true, setDownloadStatus) },
+        extractZIP: async (downloadUrl: string, fileName: string, displayName: string) => { await new Download().extractZIP(downloadUrl, displayName, fileName, settings().savePath, setDownloadStatus) }
     }
 
-    
     const getServerFile = async () => {
         const file = await new CurseForge().getFile(props.mod.modID, props.mod.serverPackFileId)
         await setServerFile(file)
@@ -49,10 +49,6 @@ const ModCard: Component<Props> = (props) => {
                 }
             }
         })
-    })
-
-    createEffect(() => {
-        console.log(serverFile())
     })
 
     const StatusElement = () => {
@@ -80,7 +76,7 @@ const ModCard: Component<Props> = (props) => {
             {StatusElement()}
             <Button style='card-more' action={CardActions.toggleCardActionsStatus} ref={cardMore}>&middot;&middot;&middot;
                 <Wrapper style='card-actions' ref={cardActionsElement}>
-                    <Button style='card-action' action={() => {}}>Download {props.mod.latestFile.displayName}</Button>
+                    <Button style='card-action' action={() => CardActions.extractZIP(props.mod.downloadUrl, props.mod.latestFile.fileName, props.mod.latestFile.displayName)}>Download {props.mod.latestFile.displayName}</Button>
                     <Button style='card-action' action={() => CardActions.downloadOnly(props.mod.downloadUrl, props.mod.latestFile.fileName)}>Download {props.mod.latestFile.fileName}</Button>
                     <Button style='card-action' action={() => {}}>Download {serverFile() ? serverFile().displayName : ''}</Button>
                     <Button style='card-action' action={() => CardActions.downloadOnly(serverFile().downloadUrl, serverFile().fileName)}>Download {serverFile() ? serverFile().fileName : ''}</Button>

@@ -15,7 +15,7 @@ server.get('/curseforge/games', async (req, rep) => {
         rep.send(data.data)
     })
     .catch((err) => {
-        console.log(err)
+        rep.send(err)
     })
 })
 
@@ -27,7 +27,7 @@ server.get('/curseforge/games/:gameID/categories', async (req, rep) => {
         rep.send(data.data)
     })
     .catch((err) => {
-        console.log(err)
+        rep.send(err)
     })
 })
 
@@ -41,7 +41,7 @@ server.get('/curseforge/games/:gameID/main-categories/:classID/mods/search/:sear
         rep.send(data.data)
     })
     .catch((err) => {
-        console.log(err)
+        rep.send(err)
     })
 })
 
@@ -54,7 +54,7 @@ server.get('/curseforge/mods/:modID/files/:fileID', async (req, rep) => {
         rep.send(data.data)
     })
     .catch((err) => {
-        console.log(err)
+        rep.send(err)
     })
 })
 
