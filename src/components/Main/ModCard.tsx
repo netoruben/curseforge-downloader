@@ -1,6 +1,5 @@
-import { Component, useContext, createSignal, For, onMount } from 'solid-js'
-import CurseForge from '../../../utils/CurseForge/CurseForge'
-import Download from '../../../utils/Download/Download'
+import { Component, useContext, createSignal, onMount } from 'solid-js'
+import Mod from '../../../utils/Mod'
 import toogleBoolean from '../hooks/toggleBoolean'
 import Button from '../common/Button/Button'
 import Icon from '../common/Icon/Icon'
@@ -9,37 +8,25 @@ import Text from '../common/Text/Text'
 import Wrapper from '../common/Wrapper/Wrapper'
 import { SettingsContext } from '../../Main'
 
-type ServerFile = {
-    displayName: string,
-    fileName: string,
-    downloadUrl: string
-}
-
 type Props = {
-    mod: { downloadUrl: string, modID: number, serverPackFileId: number, name: string, logoUrl: string, gameIcon: string, gameVersions: string[], authorName: string, latestFile: { displayName: string, fileName: string }}
+    mod: Mod
+    gameIcon: string
 }
 
 const ModCard: Component<Props> = (props) => {
     const settings = useContext<() => { savePath: string }>(SettingsContext)
     const [downloadStatus, setDownloadStatus] = createSignal<{ value: string, type: 'success' | 'failed' }>()
     const { status: cardActionsStatus, toggleStatus: toggleCardActionsStatus } = toogleBoolean()
-    const [serverFile, setServerFile] = createSignal<ServerFile>()
     let cardActionsElement: HTMLDivElement,
         cardMore: HTMLButtonElement
 
     const CardActions = {
-        toggleCardActionsStatus: () => {if (!cardActionsStatus()) {toggleCardActionsStatus(); cardActionsElement.style.display = 'grid'}},
-        downloadOnly: async (downloadUrl: string, fileName: string) => { await new Download().downloadOnly(downloadUrl, fileName, settings().savePath, true, setDownloadStatus) },
-        extractZIP: async (downloadUrl: string, fileName: string, displayName: string) => { await new Download().extractZIP(downloadUrl, displayName, fileName, settings().savePath, setDownloadStatus) }
-    }
-
-    const getServerFile = async () => {
-        const file = await new CurseForge().getFile(props.mod.modID, props.mod.serverPackFileId)
-        await setServerFile(file)
+        toggleCardActionsStatus: () => {if (!cardActionsStatus()) {toggleCardActionsStatus(); cardActionsElement.style.display = 'grid'}}
     }
 
     onMount(async () => {
-        await getServerFile()
+        props.mod.latestFile.setStatus(setDownloadStatus)
+        props.mod.serverFile.setStatus(setDownloadStatus)
 
         document.addEventListener('click', (event) => {
             if (cardActionsStatus()) {
@@ -65,21 +52,16 @@ const ModCard: Component<Props> = (props) => {
 
     return (
         <Wrapper style='card'>
-            <Icon style='card' src={props.mod.logoUrl}/>
+            <Icon style='card' src={props.mod.iconUrl}/>
             <Title style='card'>{props.mod.name.replaceAll(/(:| -|\((.*)|^ )/gm, '')}<Text style='medium'> by </Text>{props.mod.authorName}</Title>
-            <For each={props.mod.gameVersions} fallback={<div>Loading...</div>}>
-                {(version) => {
-                    if(version !== 'Forge')
-                        return <Text style='card-blob'><Icon style='small' src={props.mod.gameIcon}/>{version}</Text>
-                }}
-            </For>
+            <Text style='card-blob'><Icon style='small' src={props.gameIcon}/>{props.mod.latestFile.gameVersion}</Text>
             {StatusElement()}
             <Button style='card-more' action={CardActions.toggleCardActionsStatus} ref={cardMore}>&middot;&middot;&middot;
                 <Wrapper style='card-actions' ref={cardActionsElement}>
-                    <Button style='card-action' action={() => CardActions.extractZIP(props.mod.downloadUrl, props.mod.latestFile.fileName, props.mod.latestFile.displayName)}>Download {props.mod.latestFile.displayName}</Button>
-                    <Button style='card-action' action={() => CardActions.downloadOnly(props.mod.downloadUrl, props.mod.latestFile.fileName)}>Download {props.mod.latestFile.fileName}</Button>
-                    <Button style='card-action' action={() => {}}>Download {serverFile() ? serverFile().displayName : ''}</Button>
-                    <Button style='card-action' action={() => CardActions.downloadOnly(serverFile().downloadUrl, serverFile().fileName)}>Download {serverFile() ? serverFile().fileName : ''}</Button>
+                    <Button style='card-action' action={() => props.mod.latestFile.extract(settings().savePath)}>Download {props.mod.latestFile.displayName}</Button>
+                    <Button style='card-action' action={() => props.mod.latestFile.downloadFile(settings().savePath)}>Download {props.mod.latestFile.fileName}</Button>
+                    <Button style='card-action' action={() => props.mod.serverFile.extract(settings().savePath)}>Download {props.mod.serverFile.displayName}</Button>
+                    <Button style='card-action' action={() => props.mod.serverFile.downloadFile(settings().savePath)}>Download {props.mod.serverFile.fileName}</Button>
                 </Wrapper>
             </Button>
         </Wrapper>

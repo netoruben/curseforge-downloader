@@ -21,11 +21,11 @@ const Button: ParentComponent<Props> = (props) => {
         font-size: 1em;
     `
 
-    const Nav = styled.button`
-        background: transparent;
-        border: 0;
+    const Nav = styled(Default)`
         height: 100%;
-        cursor: pointer;
+        text-transform: uppercase;
+        font-size: 0.8em;
+        padding: 0 0.5em 0 0.5em;
         &:hover {
             background: ${theme.colors.darkest};
         }

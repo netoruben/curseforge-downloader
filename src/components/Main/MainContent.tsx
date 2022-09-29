@@ -1,17 +1,10 @@
-import { Component, createEffect, createSignal, onMount, For } from 'solid-js'
-import toogleBoolean from '../hooks/toggleBoolean'
+import { Component, createSignal, onMount } from 'solid-js'
 import CurseForge from '../../../utils/CurseForge/CurseForge'
 import Button from '../common/Button/Button'
 import Icon from '../common/Icon/Icon'
 import Input from '../common/Input/Input'
-import Title from '../common/Title/Title'
-import Text from '../common/Text/Text'
 import Wrapper from '../common/Wrapper/Wrapper'
 import ListModCards from './ListModCards'
-
-const MainContentAction = {
-    cardActions: () => {}
-}
 
 const MainContent: Component = () => {
     const [games, setGames] = createSignal<{ name?: string, id?: number, assets?: { iconUrl?: string } }>({ assets: {} })

@@ -20,15 +20,16 @@ const Title: ParentComponent<Props> = (props) => {
     `
 
     const Nav = styled(Default)`
-        margin: 0.05em 0 0 0.5em;
+        margin: 0.05em 0 0 0em;
         height: 100%;
         cursor: default;
-        font-weight: 400;
+        font-weight: 500;
         flex-grow: 1;
         padding: 0;
         letter-spacing: 0.1em;
         display: flex;
         align-items: center;
+        justify-content: center;
         -webkit-app-region: drag;
     `
 

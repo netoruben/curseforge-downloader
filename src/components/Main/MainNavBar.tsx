@@ -22,6 +22,7 @@ const MainNavBar: Component = () => {
 
   return (
     <NavBar>
+      <Button style='nav' action={() => {}}>Settings</Button>
       <Title style='nav'>
         {nw.Window.get().title}
       </Title>

@@ -1,7 +1,5 @@
 const fs = require('fs')
 const os = require('os')
-// import fs from 'fs'
-// import os from 'os'
 
 import { render } from 'solid-js/web'
 import { Component, createContext, createSignal } from 'solid-js'
@@ -35,7 +33,6 @@ const Main: Component = () => {
         <MainNavBar/>
         <MainContent/>
       </SettingProvider>
-      
     </ThemeProvider>
   )
 }
